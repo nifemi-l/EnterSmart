@@ -1,5 +1,5 @@
 ## Job Application Data Entry
-This web application simplifies the process of tracking job applications by providing a user-friendly interface for entering and managing job application data. I like to document my job applications, and after 2 years of manual excel entry, I wanted to optimize my process. I developed this tool to streamline the data entry and tracking process.
+This web application simplifies the process of tracking job applications by providing a user-friendly interface for entering job application data. I like to document my job applications, and after 2 years of manual Excel entry, I wanted to optimize my process. I developed this tool to streamline the data entry and tracking process.
 
 ### Features
 - **Interactive Web Form**: Facilitates the input of company names, job positions, and locations.
@@ -9,7 +9,7 @@ This web application simplifies the process of tracking job applications by prov
 - **Frontend**: HTML, CSS for styling, and JavaScript for client-side functionality.
 - **Backend**: Python with Flask for handling server-side logic.
 - **Data Handling**: 
-  - **Pandas**: For processing and analyzing job application data, excel.
+  - **Pandas**: For processing and analyzing job application data, Excel.
     
 ### Prerequisites
 You need to have Python installed along with Flask, Pandas, and Openpyxl. These can be installed using pip:
