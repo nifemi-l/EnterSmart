@@ -1,94 +1,101 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Job Application Data Entry</title>
-<style>
-    input[type="text"] {
-        width: 400px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-width: 2px;
-        border-radius: 8px;
-        border-color: black;
-        margin-top: 5px;
-        margin-bottom: 30px;
-        height: 20px;
-        font-size: 20px;
-        align-items: center;
-    }
-    body {
-        font-family: Arial, sans-serif;
-        align-items: center;
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        background: linear-gradient(45deg, #0e85fd 20%, #8000ff 50%, #02a2ff 80%);
-    }
-    .container {
-        font-size: 2em;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.133);
-        border-radius: 15px;
-        gap: 10px;
-        background-color: white;
-    }
-    .submit {
-        display: flex;
-        flex-direction: column;
-        width: 150px;
-        font-size: 20px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        border-radius: 10px;
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-        margin-top: 0 !important;
-    }
-    .submit:hover {
-        background-color: #0056b3;
-    }
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.4); /* Consider keeping the background for the modal overlay */
-        justify-content: center;
-        align-items: center;
-    }
-    .modal-content {
-        background-color: #fefefe;
-        padding: 20px;
-        border: 1px solid #888;
-        min-width: 300px; /* Adjust based on your content's needs */
-        width: fit-content;
-    }
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Job Application Data Entry</title>
+    <style>
+        input[type="text"] {
+            width: 400px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-width: 2px;
+            border-radius: 8px;
+            border-color: black;
+            margin-top: 5px;
+            margin-bottom: 30px;
+            height: 20px;
+            font-size: 20px;
+            align-items: center;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(45deg, #0e85fd 20%, #8000ff 50%, #02a2ff 80%);
+        }
+
+        .container {
+            display: none;
+            font-size: 2em;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.133);
+            border-radius: 15px;
+            gap: 10px;
+            background-color: white;
+        }
+
+        .buttons { 
+            display: inline-flex
+        }
+
+        .submit, .display {
+            flex-direction: row;
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            margin: auto;
+            margin-top: 0 !important;
+        }
     
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
+        .submit:hover, .display:hover {
+            background-color: #0056b3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4); /* Consider keeping the background for the modal overlay */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            min-width: 300px; /* Adjust based on your content's needs */
+            width: fit-content;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body>
     <div class="container">
@@ -96,22 +103,33 @@
             <label for="companyInput">Company Name:</label>
             <input type="text" id="companyInput" name="companyInput">
         </div>
+
         <div class="position">
             <label for="positionInput">Position:</label>
             <input type="text" id="positionInput" name="positionInput">
         </div>
+
         <div class="location">
-            <label for="locationInput">Location:</label>
+            <label for="locationInput">Location:</label>    
             <input type="text" id="locationInput" name="locationInput">
         </div>
-        <button class="submit" onclick="submitData()">Submit</button>
+
+        <div class="buttons">
+            <button class="submit" onclick="submitData()">Submit</button>
+            <a href="application-history.html"><button class="view-history">View Application History</button></a>
+        </div>
     </div>
+
     <div class="modal" id="myModal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <p id="messageText"></p>
         </div>
     </div>
+
+    <!-- <div class="application-history-container">
+        <h5 class="application-history-message">Here are your applications:</h5>
+    </div> -->
     <script>
         function submitData() {
             var companyInput = document.getElementById('companyInput');
@@ -134,7 +152,7 @@
                     location: locationInput.value
                 })
             })
-            .then(response => response.json()) // convert response from the fetch request and convert to JSON
+            .then(response => response.json()) // convert response from the fetch request to JSON
             .then(data => { // execute tasks after receiving data
                 document.getElementById('messageText').innerText = data.message;
                 showModal();
@@ -161,6 +179,34 @@
             }
         }
     }      
+
+    // function displayApplications() {
+    //     fetch ('/view-history', {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         }, 
+    //     })
+    //     .then(response => response.json()) 
+    //     .then(data => {
+    //         const applicationContainer = document.getElementsByClassName("application-container"); 
+
+    //         data.forEach(row => { 
+    //             var application = `
+    //                 <div class="application-container">
+    //                     <h6 class="company-name-display">Company: ${ row.company }</h6>
+    //                     <h6 class="position-name-display">Position: ${ row.position }</h6>
+    //                     <h6 class="location-name-display">Location: ${ row.location }</h6>
+    //                 </div>`;
+                
+    //             var applicationDiv = document.createElement(application);
+    //             applicationContainer.appendChild(applicationDiv);
+    //         }); 
+    //     })
+    //     .catch(error => { 
+    //         console.error('Error:', error);
+    //     });
+    // }
     </script>
 </body>
 </html>
