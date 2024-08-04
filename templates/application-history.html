@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application History</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            background-color: dodgerblue;
+        }
+        .wrapper {
+            text-align: center;
+        }
+        .application-item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 35%;
+            height: 20%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size:x-large;
+        }
+
+        #application-history-container { 
+            background-color: black;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: space-around;
+            width: auto; 
+            height: auto;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h5 class="application-history-message">Here are your applications:</h5>
+        <div id="application-history-container"></div>
+    </div> 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/view-history', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data fetched:', data);
+                const applicationContainer = document.getElementById('application-history-container');
+
+                if (data.length === 0) {
+                    applicationContainer.innerHTML = '<p>No applications found.</p>';
+                } else {
+                    data.forEach(row => {
+                        var application = `
+                            <div class="application-item">
+                                <h6 class="company-name-display">Company: ${row.Company}</h6>
+                                <h6 class="position-name-display">Position: ${row.Position}</h6>
+                                <h6 class="location-name-display">Location: ${row.Location}</h6>
+                            </div>`;
+                        
+                        applicationContainer.innerHTML += application;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
