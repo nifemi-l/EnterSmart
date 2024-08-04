@@ -3,23 +3,18 @@ import pandas as pd
 
 app = Flask(__name__)
 
-@app.route('/') # root, display initial webpage
+@app.route('/')
 def index():
-    # server-side render
-    return render_template('index.html') # render template file
+    return render_template('index.html')
 
-@app.route('/submit', methods=['POST']) # handle POST requests containing JSON data
+@app.route('/submit', methods=['POST'])
 def submit():
-    # request contains information about current http request
-    # get.json() parses the body of the request into a dictionary   
     data = request.get_json()
     file_path = 'data.xlsx'
 
-    # attempt to reach existing fle
     try:
         df = pd.read_excel(file_path)
     except FileNotFoundError:
-        # initialize new dataframe
         df = pd.DataFrame(columns=['Company', 'Position', 'Location'])
     
     new_row = pd.DataFrame([{
@@ -28,10 +23,20 @@ def submit():
         'Location': data['location']
         }])
     
-    df = pd.concat([df, new_row], ignore_index=True) # concatenate new row to df
-    df.to_excel(file_path, index=False) # overwrite existing file
+    df = pd.concat([df, new_row], ignore_index=True)
+    df.to_excel(file_path, index=False)
     
-    return jsonify({'message': 'Excel file updated successfully'}) # notify user
+    return jsonify({'message': 'Excel file updated successfully'})
+
+@app.route('/view-history', methods=['GET'])
+def view_application_history(): 
+    df = pd.read_excel('data.xlsx', usecols=['Company', 'Position', 'Location'])
+    data = df.to_dict(orient='records')
+    return jsonify(data)
+
+@app.route('/application-history.html')
+def application_history(): 
+    return render_template('application-history.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
