@@ -4,46 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: Arial, sans-serif;
-            height: 100vh;
+        body {
+            font-family: 'Roboto', sans-serif;
+            height: 100%;
             display: flex;
             justify-content: center;
-            background-color: dodgerblue;
+            background: linear-gradient(135deg, #277dff 0%, #c3cfe2 100%);
         }
+
         .wrapper {
-            text-align: center;
+            margin-top: 1%;
+            text-align: left;
+            width: 90%;
+            max-width: 1200px;
         }
+
         .application-item {
             background-color: #fff;
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 20px;
             margin: 10px;
-            width: 35%;
-            height: 20%;
+            width: 25%;
+            height: 40%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size:x-large;
+            font-size: large;
+            font-weight: normal;
+            border-radius: 2%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .application-item:hover { 
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        #application-history-container { 
-            background-color: black;
+        #application-history-container {
             display: flex;
-            flex-wrap: wrap;
-            flex-direction: column;
-            justify-content: space-around;
-            width: auto; 
-            height: auto;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            border-radius: .25%;
         }
 
+        .company-label, .position-label, .location-label, .assessment-label, .interview-label, .offered-label {
+            font-weight: bold;
+        }
+
+        .message-box {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 20px;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .application-history-message-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .application-history-message {
+            font-size: 35px;
+            color: white;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        .back-button {
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        
+        .back-button-container {
+            margin-right: 0px;
+            margin-top: 1%;
+            text-align: left;
+        }
+
+        .search-container {
+            margin-top: 3%;
+            margin-bottom: 2%; 
+            text-align: center;
+        }
+
+        .search-input { 
+            width: 50%;
+            padding: 10px; 
+            font-size: 18px; 
+            border-radius: 5px; 
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <h5 class="application-history-message">Here are your applications:</h5>
+        <div class="message-box">
+            <div class="back-button-container">
+                <button class="back-button" onclick="goHome()">Back</button>
+            </div>
+            <div class="application-history-message-container">
+                <div class="application-history-message"></div>
+            </div>
+        </div>
+        <div class="search-container"> 
+            <input type="text" class="search-input" id="searchInput" placeholder="Search applications..." onkeyup="filterApplications()">
+        </div>
         <div id="application-history-container"></div>
-    </div> 
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -67,21 +149,46 @@
                     applicationContainer.innerHTML = '<p>No applications found.</p>';
                 } else {
                     data.forEach(row => {
+                        console.log(row);
                         var application = `
                             <div class="application-item">
-                                <h6 class="company-name-display">Company: ${row.Company}</h6>
-                                <h6 class="position-name-display">Position: ${row.Position}</h6>
-                                <h6 class="location-name-display">Location: ${row.Location}</h6>
+                                <span class="company-label">Company</span>: ${row.Company}<br><br>
+                                <span class="position-label">Position</span>: ${row.Position}<br><br>
+                                <span class="location-label">Location</span>: ${row.Location}<br><br>
+                                <span class="assessment-label">Assessment Extended?</span>: ${row['Assessment Extended?']}<br><br>
+                                <span class="interview-label">Interview Extended?</span>: ${row['Interview Extended?']}<br><br>
+                                <span class="offered-label">Offered?</span>: ${row['Offered?']}
                             </div>`;
-                        
+
                         applicationContainer.innerHTML += application;
                     });
                 }
+
+                var applicationMessage = document.getElementsByClassName('application-history-message')[0];
+                applicationMessage.innerHTML = 'Your Application History (' + data.length + ')';
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         });
+
+        function goHome() {
+            window.location.href = '/';
+        }
+
+        function filterApplications() { 
+            const searchInput = document.getElementById('searchInput').value.toLowerCase(); 
+            const applicationItems = document.getElementsByClassName('application-item'); 
+            
+            Array.from(applicationItems).forEach(item => { 
+                const text = item.textContent.toLowerCase(); 
+                if (text.includes(searchInput)) {
+                    item.style.display = '';
+                } else { 
+                    item.style.display = 'none';
+                }
+            }); 
+        }
     </script>
 </body>
 </html>
