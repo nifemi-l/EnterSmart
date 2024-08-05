@@ -4,7 +4,23 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Job Application Data Entry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #277dff 0%, #c3cfe2 100%);
+        }
+
+        .wrapper { 
+            text-align: left;
+            max-width: 1200px;
+        }
+
         input[type="text"] {
             width: 400px;
             padding: 8px;
@@ -18,19 +34,8 @@
             font-size: 20px;
             align-items: center;
         }
-        
-        body {
-            font-family: Arial, sans-serif;
-            align-items: center;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            background: linear-gradient(45deg, #0e85fd 20%, #8000ff 50%, #02a2ff 80%);
-        }
 
         .container {
-            display: none;
             font-size: 2em;
             position: relative;
             display: flex;
@@ -44,10 +49,13 @@
         }
 
         .buttons { 
-            display: inline-flex
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 45%;
         }
 
-        .submit, .display {
+        .submit, .view-history {
             flex-direction: row;
             font-size: 20px;
             padding: 10px 20px;
@@ -57,10 +65,13 @@
             border-radius: 10px;
             margin: auto;
             margin-top: 0 !important;
+            border: 2px solid;
+            transition: background-color 0.3s, transform 0.3s;
         }
     
-        .submit:hover, .display:hover {
+        .submit:hover, .view-history:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
         }
 
         .modal {
@@ -70,15 +81,16 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4); /* Consider keeping the background for the modal overlay */
+            background-color: rgba(0,0,0,0.4);
             justify-content: center;
             align-items: center;
         }
+
         .modal-content {
             background-color: #fefefe;
             padding: 20px;
             border: 1px solid #888;
-            min-width: 300px; /* Adjust based on your content's needs */
+            min-width: 300px;
             width: fit-content;
         }
         
@@ -88,48 +100,64 @@
             font-size: 28px;
             font-weight: bold;
         }
-        .close:hover,
+
         .close:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
         }
 
+        .close:hover { 
+            cursor: pointer;
+            color:black;
+            transform: scale(1.2);
+        }
+
+        .scale-up { 
+            transform: scale(1.5);
+            transform-origin: center;
+        }
+
+        @media (max-width: 960px) {
+            .container, .modal {
+                transform: scale(0.8);
+                transform-origin: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="company">
-            <label for="companyInput">Company Name:</label>
-            <input type="text" id="companyInput" name="companyInput">
-        </div>
+    <div class="wrapper">
+        <div class="container scale-up">
+            <div class="company">
+                <label for="companyInput">Company Name:</label>
+                <input type="text" id="companyInput" name="companyInput">
+            </div>
 
-        <div class="position">
-            <label for="positionInput">Position:</label>
-            <input type="text" id="positionInput" name="positionInput">
-        </div>
+            <div class="position">
+                <label for="positionInput">Position:</label>
+                <input type="text" id="positionInput" name="positionInput">
+            </div>
 
-        <div class="location">
-            <label for="locationInput">Location:</label>    
-            <input type="text" id="locationInput" name="locationInput">
-        </div>
+            <div class="location">
+                <label for="locationInput">Location:</label>    
+                <input type="text" id="locationInput" name="locationInput">
+            </div>
 
-        <div class="buttons">
-            <button class="submit" onclick="submitData()">Submit</button>
-            <a href="application-history.html"><button class="view-history">View Application History</button></a>
+            <div class="buttons">
+                <button class="submit" onclick="submitData()">Submit</button>
+                <a href="application-history.html"><button class="view-history">View Application History</button></a>
+            </div>
         </div>
     </div>
 
-    <div class="modal" id="myModal">
+    <div class="modal scale-up" id="myModal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <p id="messageText"></p>
         </div>
     </div>
 
-    <!-- <div class="application-history-container">
-        <h5 class="application-history-message">Here are your applications:</h5>
-    </div> -->
     <script>
         function submitData() {
             var companyInput = document.getElementById('companyInput');
@@ -138,10 +166,10 @@
 
             if (companyInput.value == '' || positionInput.value == '' || locationInput.value == '') { 
                 alert('Please fill in all fields');
-                return false; // prevent further processing
+                return false;
             }
-            // make network request to retrieve resources from server
-            fetch('/submit', { // send data to endpoint
+        
+            fetch('/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,11 +180,10 @@
                     location: locationInput.value
                 })
             })
-            .then(response => response.json()) // convert response from the fetch request to JSON
-            .then(data => { // execute tasks after receiving data
+            .then(response => response.json())
+            .then(data => {
                 document.getElementById('messageText').innerText = data.message;
                 showModal();
-                // clear the input fields after showing the modal
                 companyInput.value = '';
                 positionInput.value = '';
                 locationInput.value = '';
@@ -179,34 +206,6 @@
             }
         }
     }      
-
-    // function displayApplications() {
-    //     fetch ('/view-history', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         }, 
-    //     })
-    //     .then(response => response.json()) 
-    //     .then(data => {
-    //         const applicationContainer = document.getElementsByClassName("application-container"); 
-
-    //         data.forEach(row => { 
-    //             var application = `
-    //                 <div class="application-container">
-    //                     <h6 class="company-name-display">Company: ${ row.company }</h6>
-    //                     <h6 class="position-name-display">Position: ${ row.position }</h6>
-    //                     <h6 class="location-name-display">Location: ${ row.location }</h6>
-    //                 </div>`;
-                
-    //             var applicationDiv = document.createElement(application);
-    //             applicationContainer.appendChild(applicationDiv);
-    //         }); 
-    //     })
-    //     .catch(error => { 
-    //         console.error('Error:', error);
-    //     });
-    // }
     </script>
 </body>
 </html>
