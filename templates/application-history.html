@@ -133,6 +133,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const applicationContainer = document.getElementById('application-history-container');
+
             fetch('/view-history', {
                 method: 'GET',
                 headers: {
@@ -141,16 +143,17 @@
             })
             .then(response => {
                 if (!response.ok) {
+                    applicationContainer.innerHTML = '<p class="application-item">Network response was not ok...<p>';
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
                 console.log('Data fetched:', data);
-                const applicationContainer = document.getElementById('application-history-container');
 
                 if (data.length === 0) {
-                    applicationContainer.innerHTML = '<p>No applications found.</p>';
+                    console.log('No applications found');
+                    applicationContainer.innerHTML = '<p class="application-item">No applications found...<p>';
                 } else {
                     data.forEach(row => {
                         console.log(row);
@@ -166,10 +169,12 @@
 
                         applicationContainer.innerHTML += application;
                     });
+                    
+                    var applicationMessage = document.getElementsByClassName('application-history-message')[0];
+                    applicationMessage.innerHTML = 'Your Application History (' + data.length + ')';
+
                 }
 
-                var applicationMessage = document.getElementsByClassName('application-history-message')[0];
-                applicationMessage.innerHTML = 'Your Application History (' + data.length + ')';
             })
             .catch(error => {
                 console.error('Error:', error);
