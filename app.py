@@ -30,8 +30,13 @@ def submit():
 
 @app.route('/view-history', methods=['GET'])
 def view_application_history(): 
-    df = pd.read_excel('data.xlsx', usecols=['Company', 'Position', 'Location'])
+    df = pd.read_excel('data.xlsx', usecols=['Company', 'Position', 'Location', 'Assessment Extended?', 'Interview Extended?', 'Offered?'])
+    df['Assessment Extended?'].fillna('N/A', inplace=True)
+    df['Interview Extended?'].fillna('N/A', inplace=True)
+    df['Offered?'].fillna('N/A', inplace=True)
+    print(df)
     data = df.to_dict(orient='records')
+    data.reverse()
     return jsonify(data)
 
 @app.route('/application-history.html')
