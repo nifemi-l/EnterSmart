@@ -40,8 +40,8 @@ pip install Flask pandas
 - `app.py`: The Flask backend handling data submission and retrieval.
 
 ### Screenshots
-![Entry Page](./Screenshots/Entry Page.png)
-![Application History Page](./Screenshots/Application History Page.png)
+![Entry Page](Screenshots/Entry%20Page.png)
+![Application History Page](Screenshots/Application%20History%20Page.png)
 
 ### Future Enhancements
 - Enhanced Data Visualization: Integrate charts and graphs to visualize application data.
