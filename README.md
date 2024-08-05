@@ -1,5 +1,5 @@
 ## EnterSmart: Job Application Data Entry Tool
-This web application simplifies the process of tracking job applications by providing a user-friendly interface for entering and viewing job application data. I like to document my job applications, and after 2 years of manual Excel entry, I wanted to optimize my process. I developed this tool to streamline the data entry and tracking process.
+This web application simplifies the process of tracking job applications by providing a user-friendly interface for entering and tracking job application data. I like to document my job applications, and after 2 years of manual Excel entry, I wanted to optimize my process. I developed this tool to streamline the data entry and tracking process.
 
 ### Features
 - **Interactive Web Form**: Facilitates the input of company names, job positions, and locations.
