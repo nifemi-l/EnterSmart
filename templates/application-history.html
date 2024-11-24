@@ -12,44 +12,17 @@
             display: flex;
             justify-content: center;
             background: linear-gradient(135deg, #277dff 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            background-attachment: fixed; /* fixes break in gradient */
+            transform: scale(1.1); /* zoom in a bit */
+            transform-origin: center top;
         }
 
         .wrapper {
-            margin-top: 1%;
-            text-align: left;
+            margin-top: 2%;
             width: 90%;
             max-width: 1200px;
-        }
-
-        .application-item {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 10px;
-            width: 100%;
-            height: 40%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size: medium;
-            font-weight: normal;
-            border-radius: 2%;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .application-item:hover { 
-            transform: translateY(-10px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        #application-history-container {
-            display: inline-block;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            border-radius: .25%;
-        }
-
-        .company-label, .position-label, .location-label, .assessment-label, .interview-label, .offered-label {
-            font-weight: bold;
         }
 
         .message-box {
@@ -58,30 +31,31 @@
             margin-bottom: 20px;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
         }
 
         .application-history-message-container {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .application-history-message {
-            font-size: 35px;
+            font-size: 30px;
             color: white;
-            font-weight: normal;
+            font-weight: bold;
             text-align: center;
+            display: inline-block;
+            margin: 0;
         }
 
         .back-button {
-            font-size: 20px;
-            padding: 10px 20px;
+            font-size: 16px;
+            padding: 10px 15px;
             background-color: #007bff;
             color: white;
             cursor: pointer;
-            border-radius: 10px;
-            border: 2px solid;
+            border: 1px solid white !important;
+            border-radius: 5px;
+            border: 1px solid transparent;
             transition: background-color 0.3s, transform 0.3s;
         }
 
@@ -89,82 +63,90 @@
             background-color: #0056b3;
             transform: scale(1.05);
         }
-        
-        .back-button-container {
-            margin-right: 0px;
-            margin-top: 1%;
-            text-align: left;
-        }
 
         .search-container {
-            margin-top: 3%;
-            margin-bottom: 2%; 
+            margin-top: 1%;
+            margin-bottom: 2%;
             text-align: center;
         }
 
-        .search-input { 
+        .search-input {
             width: 50%;
-            padding: 10px; 
-            font-size: 18px; 
-            border-radius: 5px; 
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
             border: 1px solid #ccc;
         }
 
-        .header-container { 
+        table {
+            width: 100%;
+            border-collapse: collapse;
             background-color: white;
             border-radius: 5px;
-            border: none; 
-            font-size: large;
-            display: inline-block;
-            align-self: center;
-            width: 100%;
-            padding: .5%;
+            overflow: hidden;
+            text-align: center; /* center align table content */
         }
 
-        .header-element {
-            color: black;
+        thead {
+            background-color: #007bff;
+            color: white;
         }
 
-        
-        input { 
-            caret-color: fuchsia;
+        th {
+            font-weight: bold;
+            padding: 12px 15px;
+            pointer-events: none; /* disable hover for head */
+        }
+
+        th:hover {
+            background-color: inherit;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-container {
+            overflow-x: auto; /* horizontal scrolling for small screens */
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <div class="message-box">
-            <div class="back-button-container">
-                <button class="back-button" onclick="goHome()">Back</button>
-            </div>
-            <div class="application-history-message-container">
-                <div class="application-history-message"></div>
-            </div>
+            <button class="back-button" onclick="goHome()">Back</button>
         </div>
-        <div class="search-container"> 
+        <div class="application-history-message-container">
+            <div class="application-history-message">Your Application History</div>
+        </div>
+        <div class="search-container">
             <input type="text" class="search-input" id="searchInput" placeholder="Search applications..." onkeyup="filterApplications()">
         </div>
-        <!-- create header -->
-        <div class="header-container">
-            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <div class="table-container">
+            <table>
                 <thead>
                     <tr>
-                        <th id="company-header" class="header-element">Company Name</th>
-                        <th id="position-header" class="header-element">Position</th>
-                        <th id="location-header" class="header-element">Location</th>
-                        <th id="assessment-header" class="header-element">Assessment Extended</th>
-                        <th id="interview-header" class="header-element">Interview Extended</th>
-                        <th id="offered-header" class="header-element">Offered</th>
+                        <th>Company Name</th>
+                        <th>Position</th>
+                        <th>Location</th>
+                        <th>Assessment Extended</th>
+                        <th>Interview Extended</th>
+                        <th>Offered</th>
                     </tr>
                 </thead>
+                <tbody id="application-history-container"></tbody>
             </table>
         </div>
-        
-        <div id="application-history-container"></div>
     </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const applicationContainer = document.getElementById('application-history-container');
 
             fetch('/view-history', {
@@ -175,44 +157,31 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    applicationContainer.innerHTML = '<p class="application-item">Network response was not ok...<p>';
+                    applicationContainer.innerHTML = '<tr><td colspan="6">Network response was not ok...</td></tr>';
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Data fetched:', data);
-
                 if (data.length === 0) {
-                    console.log('No applications found');
-                    applicationContainer.innerHTML = '<p class="application-item">No applications found...<p>';
+                    applicationContainer.innerHTML = '<tr><td colspan="6">No applications found...</td></tr>';
                 } else {
                     data.forEach(row => {
-                        console.log(row);
-                        var application = `
-                            <div class="body-container application-item">
-                                <table border-collapse: collapse; text-align: left;">
-                                    <thead>
-                                        <tr>
-                                            <th id="company-body" class="body-element">${row.Company}</th>
-                                            <th id="position-body" class="body-element">${row.Company}</th>
-                                            <th id="location-body" class="body-element">${row.Location}</th>
-                                            <th id="assessment-body" class="body-element">${row['Assessment Extended?']}</th>
-                                            <th id="interview-body" class="body-element">${row['Interview Extended?']}</th>
-                                            <th id="offered-body" class="body-element">${row['Offered?']}</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>`;
-
-                        applicationContainer.innerHTML += application;
+                        const applicationRow = `
+                            <tr>
+                                <td>${row.Company}</td>
+                                <td>${row.Position}</td>
+                                <td>${row.Location}</td>
+                                <td>${row['Assessment Extended?']}</td>
+                                <td>${row['Interview Extended?']}</td>
+                                <td>${row['Offered?']}</td>
+                            </tr>`;
+                        applicationContainer.innerHTML += applicationRow;
                     });
-                    
+
                     var applicationMessage = document.getElementsByClassName('application-history-message')[0];
                     applicationMessage.innerHTML = 'Your Application History (' + data.length + ')';
-
                 }
-
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -223,18 +192,14 @@
             window.location.href = '/';
         }
 
-        function filterApplications() { 
-            const searchInput = document.getElementById('searchInput').value.toLowerCase(); 
-            const applicationItems = document.getElementsByClassName('application-item'); 
-            
-            Array.from(applicationItems).forEach(item => { 
-                const text = item.textContent.toLowerCase(); 
-                if (text.includes(searchInput)) {
-                    item.style.display = '';
-                } else { 
-                    item.style.display = 'none';
-                }
-            }); 
+        function filterApplications() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const applicationRows = document.querySelectorAll('#application-history-container tr');
+
+            applicationRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchInput) ? '' : 'none';
+            });
         }
     </script>
 </body>
