@@ -39,6 +39,6 @@ pip install Flask pandas
 - `application-history.html`: The page where users can view their application history.
 - `app.py`: The Flask backend handling data submission and retrieval.
 
-### Screenshots
+### Images
 ![Entry Page](Screenshots/Entry%20Page.png)
 ![Application History Page](Screenshots/Application%20History%20Page.png)
