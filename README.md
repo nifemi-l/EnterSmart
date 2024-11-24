@@ -42,9 +42,3 @@ pip install Flask pandas
 ### Screenshots
 ![Entry Page](Screenshots/Entry%20Page.png)
 ![Application History Page](Screenshots/Application%20History%20Page.png)
-
-### Future Enhancements
-- Enhanced Data Visualization: Integrate charts and graphs to visualize application data.
-- Export Functionality: Allow users to export their application history to CSV or Excel files.
-- Data manipulation.
-- Database storage.
