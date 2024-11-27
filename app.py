@@ -116,8 +116,9 @@ def update():
     )
 
     # update matched rows
-    df.loc[mask, ['Company', 'Position', 'Location']] = [
-        data['newCompany'], data['newPosition'], data['newLocation']
+    df.loc[mask, ['Company', 'Position', 'Location', 'Assessment Extended?', 'Interview Extended?', 'Offered?']] = [
+        data['newCompany'], data['newPosition'], data['newLocation'], 
+        data['newAssessment'], data['newInterview'], data['newOffered']
     ]
 
     # backup file before modifying
