@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application History</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- fa icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -48,20 +53,17 @@
         }
 
         .back-button {
-            font-size: 16px;
-            padding: 10px 15px;
             background-color: #007bff;
             color: white;
             cursor: pointer;
             border: 1px solid white !important;
-            border-radius: 5px;
             border: 1px solid transparent;
             transition: background-color 0.3s, transform 0.3s;
         }
 
         .back-button:hover {
             background-color: #0056b3;
-            transform: scale(1.05);
+            transform: scale(1.025);
         }
 
         .search-container {
@@ -76,6 +78,17 @@
             font-size: 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
+        }
+        
+        /* fa action elements */
+        .action-pencil:hover{ 
+            color: darkgreen;
+            transform: scale(1.045);
+        }
+
+        .action-delete:hover { 
+            color: darkred;
+            transform: scale(1.045);
         }
 
         table {
@@ -121,7 +134,7 @@
 <body>
     <div class="wrapper">
         <div class="message-box">
-            <button class="back-button" onclick="goHome()">Back</button>
+            <button class="back-button btn btn-primary" onclick="goHome()">Back</button>
         </div>
         <div class="application-history-message-container">
             <div class="application-history-message">Your Application History</div>
@@ -139,6 +152,7 @@
                         <th>Assessment Extended</th>
                         <th>Interview Extended</th>
                         <th>Offered</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="application-history-container"></tbody>
@@ -175,6 +189,10 @@
                                 <td>${row['Assessment Extended?']}</td>
                                 <td>${row['Interview Extended?']}</td>
                                 <td>${row['Offered?']}</td>
+                                <td>
+                                    <i class="fa fa-pencil action-pencil" style="font-size:24px; color:green; margin-right: 11px"></i>
+                                    <i class="fa fa-trash-o action-delete" style="font-size:24px; color:red"></i>
+                                </td>
                             </tr>`;
                         applicationContainer.innerHTML += applicationRow;
                     });
