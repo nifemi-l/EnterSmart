@@ -57,5 +57,5 @@ pip install Flask pandas openpyxl
 ![Entry Page](Screenshots/Entry%20Page.png)
 ![Addition Modal](Screenshots/Addition_Modal_Image.png)
 ![Application History Page](Screenshots/Application%20History%20Page.png)
-![Edit Modal](Screenshots/Edit_Modal_Image.png)
-![Deletion Modal](Screenshots/Deletion_Modal_Image.png)
+![Edit Modal](Screenshots/Edit_Modal.png)
+![Deletion Modal](Screenshots/Deletion_Modal.png)
