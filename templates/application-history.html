@@ -169,9 +169,9 @@
         </div>
     </div>
 
-    <!-- modal for editing information -->
+   <!-- modal for editing information -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Edit Application</h5>
@@ -192,6 +192,27 @@
                         <div class="form-group">
                             <label for="editLocation">Location</label>
                             <input type="text" class="form-control" id="editLocation" />
+                        </div>
+                        <div class="form-group">
+                            <label for="editAssessment">Assessment Extended</label>
+                            <select class="form-control" id="editAssessment">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editInterview">Interview Extended</label>
+                            <select class="form-control" id="editInterview">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOffered">Offered</label>
+                            <select class="form-control" id="editOffered">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -340,11 +361,17 @@
             const company = row.querySelector('td:nth-child(1)').textContent.trim();
             const position = row.querySelector('td:nth-child(2)').textContent.trim();
             const location = row.querySelector('td:nth-child(3)').textContent.trim();
+            const assessment = row.querySelector('td:nth-child(4)').textContent.trim();
+            const interview = row.querySelector('td:nth-child(5)').textContent.trim();
+            const offered = row.querySelector('td:nth-child(6)').textContent.trim();
 
             // populate the modal inputs
             document.getElementById('editCompany').value = company;
             document.getElementById('editPosition').value = position;
             document.getElementById('editLocation').value = location;
+            document.getElementById('editAssessment').value = assessment;
+            document.getElementById('editInterview').value = interview;
+            document.getElementById('editOffered').value = offered;
 
             // open modal
             $('#editModal').modal('show');
@@ -355,6 +382,9 @@
                 const newCompany = document.getElementById('editCompany').value.trim();
                 const newPosition = document.getElementById('editPosition').value.trim();
                 const newLocation = document.getElementById('editLocation').value.trim();
+                const newAssessment = document.getElementById('editAssessment').value.trim();
+                const newInterview = document.getElementById('editInterview').value.trim();
+                const newOffered = document.getElementById('editOffered').value.trim();
 
                 // update backend
                 fetch('/update', {
@@ -366,7 +396,10 @@
                         oldLocation: location,
                         newCompany,
                         newPosition,
-                        newLocation
+                        newLocation,
+                        newAssessment,
+                        newInterview,
+                        newOffered
                     })
                 })
                 .then(response => response.json())
@@ -376,6 +409,9 @@
                     row.querySelector('td:nth-child(1)').textContent = newCompany;
                     row.querySelector('td:nth-child(2)').textContent = newPosition;
                     row.querySelector('td:nth-child(3)').textContent = newLocation;
+                    row.querySelector('td:nth-child(4)').textContent = newAssessment;
+                    row.querySelector('td:nth-child(5)').textContent = newInterview;
+                    row.querySelector('td:nth-child(6)').textContent = newOffered;
 
                     // update data attributes
                     element.setAttribute('data-company', newCompany);
