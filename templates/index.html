@@ -4,6 +4,9 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>EnterSmart</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -73,13 +76,9 @@
             text-align: center;
         }
 
-        .submit {
-            background-color: #007bff;
-        }
-
         .submit:hover {
             background-color: #0056b3;
-            transform: scale(1.05);
+            transform: scale(1.025);
         }
 
         .view-history {
@@ -88,46 +87,12 @@
 
         .view-history:hover {
             background-color: darkgreen;
-            transform: scale(1.05);
+            transform: scale(1.025);
         }
 
         .view-history:focus,
         .view-history:visited {
             text-decoration: none;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .close {
-            float: right;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: black;
         }
 
         @media (max-width: 960px) {
@@ -166,15 +131,29 @@
             <input type="text" id="locationInput" name="locationInput" placeholder="Enter job location">
         </div>
         <div class="buttons">
-            <a href="application-history.html" class="button view-history">View History</a>
-            <button class="button submit" onclick="submitData()">Submit</button>
+            <a href="application-history" class="btn btn-primary view-history">View History</a>
+            <!-- new modal trigger -->
+            <button type="button" class="submit btn btn-primary" onclick="submitData()">Submit</button>
         </div>
     </div>
 
-    <div class="modal" id="myModal">
+    <!-- message modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <p id="messageText"></p>
+            <div class="modal-header">
+            <h5 class="modal-title" id="successModalLongTitle">Submission successful.</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                Your data has been recorded successfully.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -189,6 +168,7 @@
                 return;
             }
 
+            // submit form data
             fetch('/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -200,22 +180,18 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('messageText').innerText = data.message;
-                showModal();
                 companyInput.value = '';
                 positionInput.value = '';
                 locationInput.value = '';
+
+                // open success modal
+                $('#successModal').modal('show');
             })
             .catch(error => console.error('Error:', error));
         }
-
-        function showModal() {
-            document.getElementById('myModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('myModal').style.display = 'none';
-        }
     </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
