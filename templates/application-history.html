@@ -265,14 +265,14 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    applicationContainer.innerHTML = '<tr><td colspan="6">Network response was not ok...</td></tr>';
+                    applicationContainer.innerHTML = '<tr><td colspan="6">Network response was not ok</td></tr>';
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
                 if (data.length === 0) {
-                    applicationContainer.innerHTML = '<tr><td colspan="6">No applications found...</td></tr>';
+                    applicationContainer.innerHTML = '<tr><td colspan="6">No applications found</td></tr>';
                 } else {
                     data.forEach(row => {
                         const applicationRow = `
@@ -304,7 +304,6 @@
                             </tr>`;
                         applicationContainer.innerHTML += applicationRow;
                     });
-                    
                     // incrementing logic
                     var applicationMessage = document.getElementsByClassName('application-history-message')[0];
                     applicationMessage.innerHTML = 'Your Application History (' + data.length + ')';
