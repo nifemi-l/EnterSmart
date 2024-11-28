@@ -20,6 +20,12 @@ def submit():
     data = request.get_json()
     file_path = DATA + XLSX
 
+    # validate inputs
+    required_fields = ['company', 'position', 'location']
+    for field in required_fields:
+        if not data.get(field) or data[field].strip() == '':
+            return jsonify({'message': f'{field.capitalize()} is required'}), 400
+
     # backup file before modifying
     try:
         shutil.copyfile(file_path, DATA + BACKUP + XLSX)
@@ -32,9 +38,9 @@ def submit():
         df = pd.DataFrame(columns=['Company', 'Position', 'Location'])
     
     new_row = pd.DataFrame([{
-        'Company': data['company'], 
-        'Position': data['position'], 
-        'Location': data['location']
+        'Company': data['company'].strip(), 
+        'Position': data['position'].strip(), 
+        'Location': data['location'].strip()
         }])
     
     # update df
@@ -50,10 +56,11 @@ def submit():
 def view_application_history():
     """Generate application history data."""
     df = pd.read_excel('data.xlsx', usecols=['Company', 'Position', 'Location', 'Assessment Extended?', 'Interview Extended?', 'Offered?'])
-    df['Assessment Extended?'].fillna('N/A', inplace=True)
-    df['Interview Extended?'].fillna('N/A', inplace=True)
-    df['Offered?'].fillna('N/A', inplace=True)
 
+    # replace NaN with 'N/A' for all columns
+    df.fillna('N/A', inplace=True)
+
+    # convert dataframe to list of dictionaries
     data = df.to_dict(orient='records')
     data.reverse()
 
@@ -101,7 +108,7 @@ def update():
     # get info from request
     data = request.get_json()
     file_path = 'data.xlsx'
-
+    
     # read the excel file
     try:
         df = pd.read_excel(file_path)
