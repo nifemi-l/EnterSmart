@@ -28,16 +28,18 @@
             margin-top: 2%;
             width: 90%;
             max-width: 1200px;
+            transform: scale(1.1)
         }
 
-        .message-box {
+        .bbutton-container {
             display: flex;
             flex-direction: row;
-            margin-bottom: 20px;
+            margin-top:  10px;
+            margin-bottom: 10px;
             align-items: center;
             justify-content: space-between;
         }
-
+        
         .application-history-message-container {
             text-align: center;
             margin-bottom: 20px;
@@ -141,14 +143,14 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="message-box">
+        <div class="bbutton-container">
             <button class="back-button btn btn-primary" onclick="goHome()">Back</button>
         </div>
         <div class="application-history-message-container">
             <div class="application-history-message">Your Application History</div>
         </div>
-        <div class="search-container">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search applications" onkeyup="filterApplications()">
+        <div id='search-container' class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search applications" onkeyup="filterApplications()" autocomplete="off">
         </div>
         <div class="table-container">
             <!-- table containing applications -->
