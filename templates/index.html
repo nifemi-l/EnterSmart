@@ -113,6 +113,10 @@
                 width: 100%;
             }
         }
+
+        .wrapper { 
+            transform: scale(1.2);
+        }
     </style>
 </head>
 <body>
@@ -120,7 +124,7 @@
         <div class="title" style="font-size: 1.8em;">Application Manager</div>
         <div class="form-group">
             <label for="companyInput">Company Name:</label>
-            <input type="text" id="companyInput" name="companyInput" placeholder="Enter company name">
+            <input type="text" id="companyInput" name="companyInput" placeholder="Enter company name" autofocus>
         </div>
         <div class="form-group">
             <label for="positionInput">Position:</label>
@@ -202,6 +206,9 @@
             if (event.keyCode === 32) { 
                 // close success modal
                 $('#successModal').modal('hide');
+
+                // focus company input section
+                $('#companyInput').focus();
             }
         });r
     </script>
