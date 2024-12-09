@@ -232,7 +232,7 @@
 
     <!-- modal for deletion -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
@@ -254,7 +254,24 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- modal for temporarily displaying success modal (post-deletion/edit)-->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="successTextContent" class="modal-body">
+                    <!-- this is where the success paragraph element will be added -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const applicationContainer = document.getElementById('application-history-container');
@@ -359,14 +376,15 @@
             const row = element.closest('tr');
 
             // get application info
-            const company = row.querySelector('td:nth-child(1)').textContent.trim();
-            const position = row.querySelector('td:nth-child(2)').textContent.trim();
-            const location = row.querySelector('td:nth-child(3)').textContent.trim();
-            const assessment = row.querySelector('td:nth-child(4)').textContent.trim();
-            const interview = row.querySelector('td:nth-child(5)').textContent.trim();
-            const offered = row.querySelector('td:nth-child(6)').textContent.trim();
+            // if obtained units are empty, default to N/A
+            const company = row.querySelector('td:nth-child(1)').textContent.trim() || 'N/A';
+            const position = row.querySelector('td:nth-child(2)').textContent.trim() || 'N/A';
+            const location = row.querySelector('td:nth-child(3)').textContent.trim() || 'N/A';
+            const assessment = row.querySelector('td:nth-child(4)').textContent.trim() || 'N/A';
+            const interview = row.querySelector('td:nth-child(5)').textContent.trim() || 'N/A';
+            const offered = row.querySelector('td:nth-child(6)').textContent.trim() || 'N/A';
 
-            // populate the modal inputs
+            // populate the modal inputs (w/ current information)
             document.getElementById('editCompany').value = company;
             document.getElementById('editPosition').value = position;
             document.getElementById('editLocation').value = location;
@@ -374,18 +392,19 @@
             document.getElementById('editInterview').value = interview;
             document.getElementById('editOffered').value = offered;
 
-            // open modal
+            // open modal 
             $('#editModal').modal('show');
 
             // handle save action
             const saveButton = document.getElementById('saveEditButton');
-            saveButton.onclick = function () {
-                const newCompany = document.getElementById('editCompany').value.trim();
-                const newPosition = document.getElementById('editPosition').value.trim();
-                const newLocation = document.getElementById('editLocation').value.trim();
-                const newAssessment = document.getElementById('editAssessment').value.trim();
-                const newInterview = document.getElementById('editInterview').value.trim();
-                const newOffered = document.getElementById('editOffered').value.trim();
+
+            saveButton.addEventListener('click', () => {
+                const newCompany = document.getElementById('editCompany').value.trim() || 'N/A';
+                const newPosition = document.getElementById('editPosition').value.trim() || 'N/A';
+                const newLocation = document.getElementById('editLocation').value.trim() || 'N/A';
+                const newAssessment = document.getElementById('editAssessment').value.trim() || 'N/A';
+                const newInterview = document.getElementById('editInterview').value.trim() || 'N/A';
+                const newOffered = document.getElementById('editOffered').value.trim() || 'N/A';
 
                 // update backend
                 fetch('/update', {
@@ -405,7 +424,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message);
                     // update UI
                     row.querySelector('td:nth-child(1)').textContent = newCompany;
                     row.querySelector('td:nth-child(2)').textContent = newPosition;
@@ -426,16 +444,54 @@
 
                     // close modal
                     $('#editModal').modal('hide');
+                    
+                    displaySuccessModal(data.message);
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('Failed to update the entry.');
                 });
-            };
+            });
         }
 
+        function displaySuccessModal(message) { 
+            const modal_element = $('#successModal');
+
+            // message to modal element
+            document.getElementById('successTextContent').innerHTML = `<p id="successConfirmationMessage">${message}</p>`;
+
+            // modal display content:
+            modal_element.modal('show');
+
+            setTimeout(() => {
+                modal_element.modal('hide')
+            }, 800);
+        }
+
+        // get elems, used for listeners
+        confirm_sv_btn = document.getElementById('saveEditButton');
+        confirm_sv_modal = document.getElementById('editModal');
+        confirm_del_btn = document.getElementById('confirmDeleteButton');
+        confirm_del_modal = document.getElementById('deleteModal');
+
+        // emit pseudo click events
+        confirm_sv_modal.addEventListener('keypress', () => { 
+            if (event.key === 'Enter') {
+                console.log('Pin@');
+                const clickEvent = new Event('click');
+                confirm_sv_btn.dispatchEvent(clickEvent);
+            }
+        });
+        
+        confirm_del_modal.addEventListener('keypress', () => { 
+            if (event.key === 'Enter') {
+                const clickEvent = new Event('click');
+                confirm_del_btn.dispatchEvent(clickEvent);
+            }
+        });
+
         // listener for deletion confirmation
-        document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+        confirm_del_btn.addEventListener('click', function () {
             const company = this.getAttribute('data-company');
             const position = this.getAttribute('data-position');
             const location = this.getAttribute('data-location');
@@ -448,8 +504,6 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
-
                 // remove row from the table
                 const rowId = this.getAttribute('data-row-id');
                 const table = document.querySelector('table tbody');
@@ -465,6 +519,8 @@
 
                 // close the modal
                 $('#deleteModal').modal('hide');
+
+                displaySuccessModal(data.message);
             })
             .catch(error => {
                 console.error('Error:', error);
