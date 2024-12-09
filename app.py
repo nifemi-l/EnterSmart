@@ -5,7 +5,7 @@ import shutil
 app = Flask(__name__)
 
 # constants
-DATA = 'data'
+FILENAME = 'data'
 XLSX = '.xlsx'
 BACKUP = '_backup'
 
@@ -18,7 +18,7 @@ def index():
 def submit():
     """Submit given data to excel."""
     data = request.get_json()
-    file_path = DATA + XLSX
+    file_path = FILENAME + XLSX
 
     # validate inputs
     required_fields = ['company', 'position', 'location']
@@ -28,7 +28,7 @@ def submit():
 
     # backup file before modifying
     try:
-        shutil.copyfile(file_path, DATA + BACKUP + XLSX)
+        shutil.copyfile(file_path, FILENAME + BACKUP + XLSX)
     except FileNotFoundError:
         pass # file dne
     
@@ -75,11 +75,11 @@ def application_history():
 def delete():
     """Handle deletion based on given identifiers."""
     data = request.get_json()
-    file_path = 'data.xlsx'
+    file_path = FILENAME + XLSX
 
     # backup file before modifying
     try:
-        shutil.copyfile(file_path, DATA + BACKUP + XLSX)
+        shutil.copyfile(file_path, FILENAME + BACKUP + XLSX)
     except FileNotFoundError:
         return jsonify({'message': 'File not found'}), 404
 
@@ -107,7 +107,7 @@ def update():
     """Receive new & old data to identify and modify record."""
     # get info from request
     data = request.get_json()
-    file_path = 'data.xlsx'
+    file_path = FILENAME + XLSX
     
     # read the excel file
     try:
@@ -130,7 +130,7 @@ def update():
 
     # backup file before modifying
     try:
-        shutil.copyfile(file_path, DATA + BACKUP + XLSX)
+        shutil.copyfile(file_path, FILENAME + BACKUP + XLSX)
     except FileNotFoundError:
         return jsonify({'message': 'File not found'}), 404
     
